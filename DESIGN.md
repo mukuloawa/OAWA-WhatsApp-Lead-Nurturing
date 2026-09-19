@@ -825,3 +825,4 @@ The simulator plays each `lead_turns` entry in order, runs the real engine again
 | Version | Date | Change |
 |---|---|---|
 | 1.0 | Sep 2026 | Initial design |
+| 1.0.1 | 19 Sep 2026 | Phase 0 read-only verification spike completed against the real OAWA Synamate account. Full findings, including resolved **[VERIFY]** items, gaps discovered (WhatsApp not yet confirmed connected; lead source appears to be a website form rather than a native Meta Lead Ad form), and open decisions, are recorded in `docs/phase0-findings.md`. No writes were made to the live account; this document's assumptions have not yet been edited to match — that pass is still pending human review of the findings. |
