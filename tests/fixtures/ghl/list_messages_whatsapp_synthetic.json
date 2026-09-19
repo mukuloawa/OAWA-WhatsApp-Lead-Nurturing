@@ -1,0 +1,40 @@
+{
+  "_fixture_note": "SYNTHETIC. No WhatsApp conversations exist in the real account yet (docs/phase0-findings.md §2-3), so this could not be captured live. Hand-built to match the exact verified schema of GET /conversations/messages/export (same field names/types as list_messages.json), with messageType set to TYPE_WHATSAPP, which is a confirmed valid enum value (seen in the search-conversation operation's lastMessageType enum, Phase 0). Order is newest-first (descending by dateAdded), matching the real API's default/requested sortOrder=desc — RealGHLClient.get_thread() reverses this to oldest-first before returning.",
+  "messages": [
+    {
+      "id": "wamsg00000000000000002",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 1,
+      "locationId": "FlT9bndDcWIrmuveZWZa",
+      "body": "Got it — and how many years have you been in business?",
+      "contactId": "contact000000000000002",
+      "contentType": "text/plain",
+      "conversationId": "waconv0000000000000001",
+      "dateAdded": "2026-09-19T09:00:05.000Z",
+      "dateUpdated": "2026-09-19T09:00:05.000Z",
+      "source": "app",
+      "messageType": "TYPE_WHATSAPP",
+      "from": "OAWA",
+      "to": "+911234567890"
+    },
+    {
+      "id": "wamsg00000000000000001",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 1,
+      "locationId": "FlT9bndDcWIrmuveZWZa",
+      "body": "around 6 crore abhi",
+      "contactId": "contact000000000000002",
+      "contentType": "text/plain",
+      "conversationId": "waconv0000000000000001",
+      "dateAdded": "2026-09-19T09:00:00.000Z",
+      "dateUpdated": "2026-09-19T09:00:00.000Z",
+      "messageType": "TYPE_WHATSAPP",
+      "from": "+911234567890",
+      "to": "OAWA"
+    }
+  ],
+  "nextCursor": null,
+  "total": 2
+}

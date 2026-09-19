@@ -1,0 +1,11 @@
+{
+  "_fixture_note": "A real subset (unmodified field names/keys/ids) of the 412 custom fields captured read-only from GET /locations/{locationId}/customFields in Phase 0/2. Used to test that our own wa_* keys are correctly told apart from unrelated existing fields, including the one pre-existing near-miss 'contact.wa_group_joined'. None of our 12 wa_* fields are in here, because none exist in the live account yet (docs/phase0-findings.md §1). See get_custom_fields_with_wa_fields.json for a version with synthetic wa_* fields added, for testing resolution once they exist.",
+  "customFields": [
+    {"id": "23BgESqc7DqLFQ2vS0Vi", "name": "AUM (in Crores)", "model": "contact", "fieldKey": "contact.aum_in_crores", "dataType": "TEXT", "position": 10},
+    {"id": "81wZLshKwgLZwwkPqBtk", "name": "I think I’ve hit a ceiling with the kind of clients I can attract.", "model": "contact", "fieldKey": "contact.i_think_ive_hit_a_ceiling_with_the_kind_of_clients_i_can_attract", "dataType": "NUMERICAL", "position": 11},
+    {"id": "CxqgQ3ZRw7gaZ2jbFXD7", "name": "What I’ve tried so far that didn’t work:", "model": "contact", "fieldKey": "contact.what_ive_tried_so_far_that_didnt_work", "dataType": "TEXT", "position": 12},
+    {"id": "nH0S7piVvI1n2DgUEJau", "name": "AUM", "model": "contact", "fieldKey": "contact.aum", "dataType": "TEXT", "position": 13},
+    {"id": "yPXHPgKXB0jKwbsBqxDW", "name": "WA Group Joined", "model": "contact", "fieldKey": "contact.wa_group_joined", "dataType": "CHECKBOX", "position": 14},
+    {"id": "0eDRU9F5Erf9SiTcJjdk", "name": "Remarks", "model": "contact", "fieldKey": "contact.remarks", "dataType": "LARGE_TEXT", "position": 15}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "_fixture_note": "Anonymised from real GET /conversations/messages/export responses captured read-only in Phase 2 (docs/phase0-findings.md). These two messages happen to come from two different real Instagram conversations (messageType TYPE_INSTAGRAM, since no WhatsApp conversations exist in the account yet — see list_messages_whatsapp_synthetic.json for that case), combined here purely to illustrate the inbound/outbound message shape. Order is newest-first (descending by dateAdded), matching the real API's default/requested sortOrder=desc — RealGHLClient.get_thread() reverses this to oldest-first before returning.",
+  "messages": [
+    {
+      "id": "msg0000000000000000002",
+      "direction": "outbound",
+      "status": "delivered",
+      "type": 18,
+      "locationId": "FlT9bndDcWIrmuveZWZa",
+      "body": "Thank you for your message. A representative will respond shortly. Kindly note: our business hours are Mon-Sat 10 AM to 6 PM.",
+      "contactId": "contact000000000000001",
+      "contentType": "text/plain",
+      "conversationId": "conv0000000000000000001",
+      "dateAdded": "2026-09-14T18:32:24.633Z",
+      "dateUpdated": "2026-09-14T18:32:24.633Z",
+      "source": "app",
+      "messageType": "TYPE_INSTAGRAM",
+      "from": "OAWA",
+      "to": "Test Lead"
+    },
+    {
+      "id": "msg0000000000000000001",
+      "direction": "inbound",
+      "status": "delivered",
+      "type": 18,
+      "locationId": "FlT9bndDcWIrmuveZWZa",
+      "body": "I wanted to learn more about OAWA.",
+      "contactId": "contact000000000000001",
+      "contentType": "text/plain",
+      "conversationId": "conv0000000000000000001",
+      "dateAdded": "2026-09-14T18:32:22.059Z",
+      "dateUpdated": "2026-09-14T18:32:22.059Z",
+      "messageType": "TYPE_INSTAGRAM",
+      "from": "Test Lead",
+      "to": "OAWA"
+    }
+  ],
+  "nextCursor": "e3f98f28-81fc-401e-bc7e-41b75b663328",
+  "total": 1432
+}

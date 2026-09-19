@@ -1,0 +1,49 @@
+{
+  "_fixture_note": "Anonymised from a real GET /contacts/{contactId} response captured read-only in Phase 2 (docs/phase0-findings.md). Name/email/phone/IP/ad-tracking identifiers replaced; structure and field names are real.",
+  "contact": {
+    "id": "PkciBJMS9v7ujtGvvsyA",
+    "dateAdded": "2026-09-19T10:38:30.344Z",
+    "type": "lead",
+    "locationId": "FlT9bndDcWIrmuveZWZa",
+    "firstName": "Test",
+    "firstNameLowerCase": "test",
+    "fullNameLowerCase": "test lead",
+    "lastName": "Lead",
+    "lastNameLowerCase": "lead",
+    "email": "test.lead@example.com",
+    "emailLowerCase": "test.lead@example.com",
+    "phone": "+911234567890",
+    "country": "IN",
+    "source": "Webinar Registration: Grow your AUM",
+    "timezone": "Asia/Calcutta",
+    "attributionSource": {
+      "sessionSource": "Social media",
+      "url": "https://example.com/session-registration",
+      "campaign": "Example Campaign",
+      "utmSource": "ig",
+      "utmMedium": "example",
+      "utmContent": "example",
+      "referrer": "https://instagram.com",
+      "medium": "form"
+    },
+    "createdBy": {
+      "source": "FORM",
+      "channel": "ISTIO_MESH",
+      "sourceId": "URRzKrfsyEkf5Gp7YM8x",
+      "timestamp": "2026-09-19T10:38:30.343Z"
+    },
+    "tags": ["26-09-2026 webinar registration"],
+    "dateUpdated": "2026-09-19T10:38:33.312Z",
+    "customFields": [
+      {"id": "23BgESqc7DqLFQ2vS0Vi", "value": "10"},
+      {"id": "3CCc4aTFynlFgXUIKalR", "value": "10000"},
+      {"id": "3PnoiO3Wqln75l7BKqds", "value": "IND_33 to 55_Investment Strategy"},
+      {"id": "ArYPf3LMQXCjupAEELFC", "value": "ig"},
+      {"id": "cX0i0TYbdETdNjdti8UC", "value": "[DT_C1] AUM Diagnostic | 08/09/26 | CBO  Test -1"},
+      {"id": "kXn7gJjnivhkHSqLiYqn", "value": "All Ads in one"},
+      {"id": "s55sk0sMBh1XvrxdLuNT", "value": "37"}
+    ],
+    "additionalEmails": [],
+    "additionalPhones": []
+  }
+}

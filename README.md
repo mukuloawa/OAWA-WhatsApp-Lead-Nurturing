@@ -6,10 +6,12 @@ See [`DESIGN.md`](./DESIGN.md) for the full specification and
 [`docs/phase0-findings.md`](./docs/phase0-findings.md) for what has been
 verified against the real Synamate/GHL account so far.
 
-**Status: Phase 1 (project skeleton) only.** No GHL adapter, no webhook,
-no conversation engine, and nothing deployed yet. The app currently only
-exposes `/health` and `/ready`; it does not talk to WhatsApp, Synamate,
-or Claude.
+**Status: Phase 2 (GHL/Synamate adapter) complete.** The `GHLClient`
+interface, `RealGHLClient`, and `FakeGHLClient` exist and are tested, but
+nothing calls them yet — no webhook, no conversation engine, and nothing
+deployed. `RealGHLClient` has never sent a WhatsApp message or modified a
+real contact/tag/field; see `docs/phase0-findings.md` for what its
+endpoints were verified against.
 
 ## Requirements
 
@@ -69,8 +71,12 @@ See `DESIGN.md` Section 15 for the intended final layout. As of Phase 1:
 - `src/nurture/api/health.py` — the two Phase 1 endpoints.
 - `src/nurture/store/` — SQLAlchemy models (`inbound_events`, `turns`) and
   the async DB engine/session helpers.
-- `src/nurture/ghl/`, `engine/`, `guards/`, `worker/`, `sim/` — placeholder
-  packages for Phases 2-4; each `__init__.py` says what phase fills it in.
+- `src/nurture/ghl/` — the `GHLClient` protocol (`client.py`), domain
+  types (`models.py`), the 12 tracked custom field keys (`fields.py`),
+  `RealGHLClient` (`real.py`), and `FakeGHLClient` (`fake.py`). This is
+  the only module allowed to make GHL HTTP calls.
+- `src/nurture/engine/`, `guards/`, `worker/`, `sim/` — placeholder
+  packages for Phases 3-4; each `__init__.py` says what phase fills it in.
 - `alembic/` — database migrations.
 - `config/` — `agenda.yaml` (still has the `FILL IN` placeholder — OAWA
   needs to supply the real session agenda before shadow/live mode),
@@ -78,12 +84,18 @@ See `DESIGN.md` Section 15 for the intended final layout. As of Phase 1:
 - `prompts/` — the system prompt and tool schema from DESIGN.md
   Appendices A and B, stored verbatim as files per DESIGN.md Section 0.
 - `docs/phase0-findings.md` — Phase 0 verification results.
+- `tests/fixtures/ghl/` — response fixtures used to test `RealGHLClient`'s
+  parsing; each has a `_fixture_note` saying whether it's a real
+  (anonymised) capture or hand-built from a verified schema — see
+  `tests/fixtures/ghl/README.md`.
 
 ## What this service does **not** do yet
 
-- Does not call the Synamate/GHL API (no `GHL_TOKEN` calls are made
-  anywhere in the code yet).
+- Nothing calls `RealGHLClient` yet — there is no webhook, no worker, no
+  pipeline wiring it up (Phase 3).
 - Does not call the Anthropic API.
-- Does not send WhatsApp messages, create/modify GHL tags, custom
-  fields, contacts, notes, or workflows.
+- `RealGHLClient` implements sending WhatsApp messages, notes, tags, and
+  custom field updates, but these have never been executed against the
+  real account — only their request/response schemas were verified
+  (see `docs/phase0-findings.md` and `tests/fixtures/ghl/README.md`).
 - Is not deployed anywhere.

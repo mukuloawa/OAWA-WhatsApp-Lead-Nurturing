@@ -1,0 +1,7 @@
+{
+  "_fixture_note": "SYNTHETIC. Built from the verified responseProjection of send-a-new-message (POST /conversations/messages) in Phase 0/2 (topLevelKeys: conversationId, emailMessageId, messageId, messageIds, msg). This operation was never called live — DESIGN.md Phase 2 forbids sending WhatsApp messages.",
+  "messageId": "sentmsg0000000000000001",
+  "messageIds": ["sentmsg0000000000000001"],
+  "conversationId": "waconv0000000000000001",
+  "msg": "success"
+}

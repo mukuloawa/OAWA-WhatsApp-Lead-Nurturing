@@ -1,0 +1,9 @@
+{
+  "_fixture_note": "SYNTHETIC. Built from the verified responseProjection of create-note (POST /contacts/{contactId}/notes) in Phase 2 (topLevelKeys: note). Never called live — DESIGN.md Phase 2 forbids modifying real contacts.",
+  "note": {
+    "id": "note0000000000000000001",
+    "body": "[BOT DRAFT — send manually] example shadow-mode note",
+    "contactId": "contact000000000000002",
+    "dateAdded": "2026-09-19T09:00:05.000Z"
+  }
+}

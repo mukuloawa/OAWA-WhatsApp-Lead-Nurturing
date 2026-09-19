@@ -1,0 +1,23 @@
+{
+  "_fixture_note": "SYNTHETIC. Same real subset as get_custom_fields.json, with the 12 wa_* fields this project needs APPENDED as invented entries (ids prefixed 'syn'). These 12 fields do not exist in the live Synamate account (docs/phase0-findings.md §1) and nothing here was written to it. This fixture exists only to test resolve_custom_field_ids() and Contact.fields population once those fields are eventually created by hand in the GHL UI, per DESIGN.md §6.1.",
+  "customFields": [
+    {"id": "23BgESqc7DqLFQ2vS0Vi", "name": "AUM (in Crores)", "model": "contact", "fieldKey": "contact.aum_in_crores", "dataType": "TEXT", "position": 10},
+    {"id": "81wZLshKwgLZwwkPqBtk", "name": "I think I’ve hit a ceiling with the kind of clients I can attract.", "model": "contact", "fieldKey": "contact.i_think_ive_hit_a_ceiling_with_the_kind_of_clients_i_can_attract", "dataType": "NUMERICAL", "position": 11},
+    {"id": "CxqgQ3ZRw7gaZ2jbFXD7", "name": "What I’ve tried so far that didn’t work:", "model": "contact", "fieldKey": "contact.what_ive_tried_so_far_that_didnt_work", "dataType": "TEXT", "position": 12},
+    {"id": "nH0S7piVvI1n2DgUEJau", "name": "AUM", "model": "contact", "fieldKey": "contact.aum", "dataType": "TEXT", "position": 13},
+    {"id": "yPXHPgKXB0jKwbsBqxDW", "name": "WA Group Joined", "model": "contact", "fieldKey": "contact.wa_group_joined", "dataType": "CHECKBOX", "position": 14},
+    {"id": "0eDRU9F5Erf9SiTcJjdk", "name": "Remarks", "model": "contact", "fieldKey": "contact.remarks", "dataType": "LARGE_TEXT", "position": 15},
+    {"id": "syn0001wa_aum000000000", "name": "WA AUM", "model": "contact", "fieldKey": "contact.wa_aum", "dataType": "TEXT", "position": 100},
+    {"id": "syn0002wa_years0000000", "name": "WA Years In Business", "model": "contact", "fieldKey": "contact.wa_years_in_business", "dataType": "TEXT", "position": 101},
+    {"id": "syn0003wa_probcat00000", "name": "WA Problem Category", "model": "contact", "fieldKey": "contact.wa_problem_category", "dataType": "TEXT", "position": 102},
+    {"id": "syn0004wa_probwords000", "name": "WA Problem In Their Words", "model": "contact", "fieldKey": "contact.wa_problem_in_their_words", "dataType": "LARGE_TEXT", "position": 103},
+    {"id": "syn0005wa_probdur00000", "name": "WA Problem Duration", "model": "contact", "fieldKey": "contact.wa_problem_duration", "dataType": "TEXT", "position": 104},
+    {"id": "syn0006wa_tried0000000", "name": "WA Tried So Far", "model": "contact", "fieldKey": "contact.wa_tried_so_far", "dataType": "LARGE_TEXT", "position": 105},
+    {"id": "syn0007wa_keymetric000", "name": "WA Key Metric", "model": "contact", "fieldKey": "contact.wa_key_metric", "dataType": "TEXT", "position": 106},
+    {"id": "syn0008wa_ceiling00000", "name": "WA Ceiling View", "model": "contact", "fieldKey": "contact.wa_ceiling_view", "dataType": "TEXT", "position": 107},
+    {"id": "syn0009wa_botturns0000", "name": "WA Bot Turns", "model": "contact", "fieldKey": "contact.wa_bot_turns", "dataType": "NUMERICAL", "position": 108},
+    {"id": "syn0010wa_diagturns000", "name": "WA Diagnosis Turns", "model": "contact", "fieldKey": "contact.wa_diagnosis_turns", "dataType": "NUMERICAL", "position": 109},
+    {"id": "syn0011wa_lastmsgid000", "name": "WA Last Processed Msg Id", "model": "contact", "fieldKey": "contact.wa_last_processed_msg_id", "dataType": "TEXT", "position": 110},
+    {"id": "syn0012wa_escreason000", "name": "WA Escalation Reason", "model": "contact", "fieldKey": "contact.wa_escalation_reason", "dataType": "TEXT", "position": 111}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "_fixture_note": "SYNTHETIC. Built from the verified responseProjection of update-contact (PUT /contacts/{contactId}) in Phase 2 (topLevelKeys: contact, succeeded). Never called live — DESIGN.md Phase 2 forbids modifying real contacts or custom fields.",
+  "succeeded": true,
+  "contact": {
+    "id": "contact000000000000002",
+    "customFields": [
+      {"id": "syn0001wa_aum000000000", "fieldValue": "6 crore"}
+    ]
+  }
+}

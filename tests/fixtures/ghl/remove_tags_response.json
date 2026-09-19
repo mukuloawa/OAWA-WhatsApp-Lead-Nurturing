@@ -1,0 +1,4 @@
+{
+  "_fixture_note": "SYNTHETIC. Built from the verified responseProjection of remove-tags (DELETE /contacts/{contactId}/tags) in Phase 2 (topLevelKeys: tags). Never called live — DESIGN.md Phase 2 forbids modifying live tags.",
+  "tags": ["wa-stage-1"]
+}

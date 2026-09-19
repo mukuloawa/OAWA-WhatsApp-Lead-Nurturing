@@ -1,0 +1,27 @@
+{
+  "_fixture_note": "SYNTHETIC. Same shape as get_contact.json, but with customFields values referencing the synthetic wa_* field ids from get_custom_fields_with_wa_fields.json, so Contact.fields population can be tested end to end.",
+  "contact": {
+    "id": "PkciBJMS9v7ujtGvvsyA",
+    "dateAdded": "2026-09-19T10:38:30.344Z",
+    "type": "lead",
+    "locationId": "FlT9bndDcWIrmuveZWZa",
+    "firstName": "Test",
+    "lastName": "Lead",
+    "email": "test.lead@example.com",
+    "phone": "+911234567890",
+    "country": "IN",
+    "city": "Pune",
+    "source": "Webinar Registration: Grow your AUM",
+    "timezone": "Asia/Calcutta",
+    "tags": ["26-09-2026 webinar registration", "wa-stage-2"],
+    "dateUpdated": "2026-09-19T10:38:33.312Z",
+    "customFields": [
+      {"id": "23BgESqc7DqLFQ2vS0Vi", "value": "10"},
+      {"id": "syn0001wa_aum000000000", "value": "6 crore"},
+      {"id": "syn0002wa_years0000000", "value": "3 years"},
+      {"id": "syn0009wa_botturns0000", "value": "2"}
+    ],
+    "additionalEmails": [],
+    "additionalPhones": []
+  }
+}
