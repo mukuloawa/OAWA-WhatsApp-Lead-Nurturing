@@ -1,0 +1,37 @@
+{
+  "name": "respond",
+  "description": "OAWA's next WhatsApp message plus what has been learned about the lead so far.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "reply": {
+        "type": "string",
+        "description": "The exact message to send. Use the token [[WEBINAR_LINK]] for the link, only in the invite. May be empty when escalating."
+      },
+      "stage": {
+        "type": "string",
+        "enum": ["basics", "problem_ask", "diagnosis", "invited", "confirmed", "declined", "escalated"]
+      },
+      "extracted": {
+        "type": "object",
+        "properties": {
+          "aum": {"type": "string"},
+          "years_in_business": {"type": "string"},
+          "city": {"type": "string"},
+          "problem_category": {
+            "type": "string",
+            "enum": ["", "lead_gen", "conversion", "hni", "retention", "time_systems", "visibility", "other"]
+          },
+          "problem_in_their_words": {"type": "string"},
+          "problem_duration": {"type": "string"},
+          "tried_so_far": {"type": "string"},
+          "key_metric": {"type": "string"},
+          "ceiling_view": {"type": "string"}
+        }
+      },
+      "escalate": {"type": "boolean"},
+      "escalation_reason": {"type": "string"}
+    },
+    "required": ["reply", "stage", "extracted", "escalate"]
+  }
+}

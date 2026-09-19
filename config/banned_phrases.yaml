@@ -1,0 +1,11 @@
+# Banned phrases for output validation rule V6 (DESIGN.md Section 9.2).
+# A reply containing any of these (case-insensitive) fails validation.
+# Starting list per DESIGN.md's own examples; review before live use.
+
+phrases:
+  - "guaranteed"
+  - "guarantee"
+  - "100%"
+  - "assured returns"
+  - "risk-free"
+  - "no risk"

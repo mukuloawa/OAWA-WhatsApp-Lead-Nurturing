@@ -1,0 +1,13 @@
+# The actual Saturday "AUM Strategic Diagnostic" session agenda.
+# This is rendered into the system prompt (Appendix A, <<SESSION_AGENDA>>)
+# as the ONLY thing the model is allowed to say the session covers.
+#
+# FILL IN before running in shadow or live mode. Per DESIGN.md Section 11,
+# the app must refuse to start in shadow/live mode while this still says
+# FILL IN. It is fine for dry_run / local development / Phase 1-3 testing.
+#
+# See DESIGN.md Section 19, Q4 (owner: OAWA, Sujoy sign-off) and
+# docs/phase0-findings.md.
+
+agenda:
+  - "FILL IN"

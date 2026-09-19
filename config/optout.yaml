@@ -1,0 +1,14 @@
+# Opt-out keyword patterns for Guard G-5 (DESIGN.md Section 10).
+# Matched as the *whole message* or its first words (case-insensitive).
+# This is a starting list per DESIGN.md's own examples; review before live use.
+
+patterns:
+  - "stop"
+  - "unsubscribe"
+  - "band karo"
+  - "mat bhejo"
+  - "don't message"
+  - "do not message"
+  - "remove me"
+  - "opt out"
+  - "optout"
