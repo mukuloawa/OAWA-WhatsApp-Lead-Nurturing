@@ -1,0 +1,17 @@
+# DESIGN.md Appendix E, verbatim.
+id: S1
+name: Lead-gen advisor, cooperative
+contact: {first_name: Rahul, city: Pune}
+lead_turns:
+  - "around 6 crore abhi"
+  - "3 saal ho gaye"
+  - "leads nahi aa rahe yaar, mostly referrals pe hi depend karta hoon"
+  - "hamesha se referral hi raha, Instagram try kiya tha but kuch nahi hua"
+  - "honestly zero. sab referral se hi hai"
+  - "haan definitely coming"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: confirmed
+  extracted_includes: {problem_category: lead_gen}
+  link_sent_exactly_once: true
+  max_diagnosis_turns: 3

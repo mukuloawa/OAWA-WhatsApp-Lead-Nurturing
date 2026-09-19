@@ -1,17 +1,15 @@
-"""The seam between the Phase 3 pipeline and the Phase 4 conversation engine.
+"""The seam between the pipeline (worker/) and the conversation engine
+(engine/).
 
-DESIGN.md Section 16 ("Pipeline integration" test row) explicitly calls
-for "a stubbed Claude returning canned tool outputs" at this phase. This
-module defines the shape of that output (EngineDecision, matching
-Appendix B's respond tool schema exactly) and the protocol the pipeline
-calls through (ConversationEngine) — NOT the real Claude-calling engine,
-prompt assembly, output validation, regeneration, or state-machine
-legality checks. Those are explicitly Phase 4 deliverables (DESIGN.md
-Section 17) and are not implemented here.
+`EngineDecision` mirrors Appendix B's respond tool schema, plus audit
+metadata for the turns table. `ConversationEngine` is the protocol the
+pipeline calls through — implemented for real by
+`engine.claude_client.ClaudeEngine` (Phase 4).
 
-`AlwaysEscalateEngine` is the safe default the app wires up until Phase 4
-exists: if this pipeline were ever triggered before Phase 4 is built, it
-escalates to a human instead of guessing at a reply.
+`AlwaysEscalateEngine` remains as a safe placeholder for tests and any
+context where no real engine should be constructed (it never guesses a
+reply, only escalates) — it was the app's default before Phase 4 built
+the real engine.
 """
 
 from __future__ import annotations
@@ -24,13 +22,28 @@ from nurture.ghl.models import Contact, Message
 
 
 class EngineDecision(BaseModel):
-    """Mirrors the `respond` tool's input_schema (DESIGN.md Appendix B)."""
+    """Mirrors the `respond` tool's input_schema (DESIGN.md Appendix B),
+    plus audit metadata for the `turns` table (DESIGN.md Section 6.2).
+
+    The metadata fields are optional with safe defaults so Phase 3's
+    stub engines and AlwaysEscalateEngine don't need to supply them —
+    only ClaudeEngine (Phase 4) populates them for real."""
 
     reply: str
     stage: str
     extracted: dict[str, str]
     escalate: bool
     escalation_reason: str | None = None
+
+    model: str = "n/a"
+    prompt_version: str = "n/a"
+    tool_output: dict | None = None
+    validation_errors: list[str] | None = None
+    regenerated: bool = False
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    cache_read_tokens: int | None = None
+    latency_ms: int | None = None
 
 
 class ConversationEngine(Protocol):

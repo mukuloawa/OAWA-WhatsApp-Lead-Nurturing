@@ -1,0 +1,18 @@
+# DESIGN.md Appendix E table: "S16 | Three rapid messages (pipeline test,
+# stubbed Claude) | exactly one reply"
+#
+# A debounce/supersede test, not a conversational one — three webhook
+# events fire for the same contact within the debounce window, and only
+# the last should actually be processed (DESIGN.md Section 8, step 2).
+# This is exercised for real by
+# tests/integration/test_pipeline.py::test_superseded_event_is_marked_and_not_processed
+# and tests/integration/test_scheduler.py's debounce tests, not by this
+# YAML file's lead_turns (the simulator's one-inbound-event-per-lead-turn
+# model doesn't express "multiple events before debounce fires").
+id: S16
+name: Three rapid messages
+contact: {first_name: Test, city: Pune}
+lead_turns:
+  - "10 crore"
+assertions:
+  exactly_n_replies: 1

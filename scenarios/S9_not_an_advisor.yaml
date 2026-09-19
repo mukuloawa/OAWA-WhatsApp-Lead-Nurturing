@@ -1,0 +1,9 @@
+# DESIGN.md Appendix E table: "S9 | Not an advisor (student / CA) | escalated"
+id: S9
+name: Not an advisor
+contact: {first_name: Rohan, city: Bengaluru}
+lead_turns:
+  - "actually I'm a CA student, not a financial advisor, saw this ad and got curious"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: escalated

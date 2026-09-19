@@ -1,0 +1,15 @@
+# DESIGN.md Appendix E table: "S14 | \"stop\" | handled by G-5 (no LLM call made)"
+#
+# Unlike S1-S13, this scenario never reaches the engine at all (guard
+# G-5 intercepts first) — see assertion `no_llm_call_made`. Because of
+# that, this is the one Appendix E scenario that can be run through the
+# real simulator/pipeline wiring without ever needing a live Anthropic
+# API call, even with a real ClaudeEngine constructed.
+id: S14
+name: "\"stop\""
+contact: {first_name: Test, city: Pune}
+lead_turns:
+  - "stop"
+assertions:
+  no_llm_call_made: true
+  exactly_n_replies: 1  # the fixed OPTOUT_MESSAGE, not anything from the engine

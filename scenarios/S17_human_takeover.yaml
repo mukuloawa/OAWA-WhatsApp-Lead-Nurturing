@@ -1,0 +1,12 @@
+# DESIGN.md Appendix E table: "S17 | Human message in thread after bot's
+# last (pipeline test) | wa-paused added, no reply"
+#
+# A human-takeover (G-4) test, not a conversational one. Exercised for
+# real by tests/integration/test_pipeline.py::test_g4_human_takeover_pauses.
+id: S17
+name: Human takeover
+contact: {first_name: Test, city: Pune}
+lead_turns:
+  - "10 crore"
+assertions:
+  exactly_n_replies: 1

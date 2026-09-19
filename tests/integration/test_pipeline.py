@@ -486,3 +486,77 @@ async def test_diagnosis_turn_counter_increments_and_resets(
     )
 
     assert contact.fields["wa_diagnosis_turns"] == "2"
+
+
+async def test_llm_unavailable_tags_but_sends_no_message(
+    db_session_factory, valid_settings_kwargs, stub_engine_factory
+):
+    inbound = make_message(id="reply-during-outage")
+    contact = make_contact(tags={"wa-stage-2"})
+    fake_ghl = FakeGHLClient(
+        contacts={"c1": contact}, threads={"c1": [inbound]}, field_ids=make_field_ids()
+    )
+    decision = EngineDecision(
+        reply="",
+        stage="escalated",
+        extracted={},
+        escalate=True,
+        escalation_reason="llm_unavailable",
+    )
+    engine = stub_engine_factory(decision)
+    settings = settings_with(valid_settings_kwargs, send_mode="live")
+    event_id = await insert_event(db_session_factory, contact_id="c1")
+
+    outcome = await process(
+        event_id, session_factory=db_session_factory, ghl=fake_ghl, engine=engine, settings=settings
+    )
+
+    assert outcome.status == "processed"
+    assert outcome.reply_text is None  # DESIGN.md Section 7.3/9.5: no message, tag only
+    assert outcome.sent is False
+    assert "send_whatsapp" not in [c.method for c in fake_ghl.calls]
+    assert "wa-escalated" in contact.tags
+    assert contact.fields["wa_escalation_reason"] == "llm_unavailable"
+
+
+async def test_turns_row_captures_engine_audit_metadata(
+    db_session_factory, valid_settings_kwargs, stub_engine_factory
+):
+    inbound = make_message(id="lead-reply-audit")
+    contact = make_contact(tags={"wa-stage-1"})
+    fake_ghl = FakeGHLClient(
+        contacts={"c1": contact}, threads={"c1": [inbound]}, field_ids=make_field_ids()
+    )
+    decision = EngineDecision(
+        reply="Got it, years in business?",
+        stage="basics",
+        extracted={"aum": "6 crore"},
+        escalate=False,
+        model="claude-sonnet-5",
+        prompt_version="deadbeef1234",
+        tool_output={"reply": "Got it, years in business?", "stage": "basics"},
+        regenerated=True,
+        input_tokens=111,
+        output_tokens=22,
+        cache_read_tokens=5,
+        latency_ms=987,
+    )
+    engine = stub_engine_factory(decision)
+    settings = settings_with(valid_settings_kwargs, send_mode="live")
+    event_id = await insert_event(db_session_factory, contact_id="c1")
+
+    await process(
+        event_id, session_factory=db_session_factory, ghl=fake_ghl, engine=engine, settings=settings
+    )
+
+    async with db_session_factory() as session:
+        turn = await repository.get_last_turn(session, contact_id="c1")
+
+    assert turn.model == "claude-sonnet-5"
+    assert turn.prompt_version == "deadbeef1234"
+    assert turn.tool_output == {"reply": "Got it, years in business?", "stage": "basics"}
+    assert turn.regenerated is True
+    assert turn.input_tokens == 111
+    assert turn.output_tokens == 22
+    assert turn.cache_read_tokens == 5
+    assert turn.latency_ms == 987

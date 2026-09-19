@@ -1,0 +1,11 @@
+# DESIGN.md Appendix E table: "S8 | Asks programme fee | escalated"
+id: S8
+name: Asks programme fee
+contact: {first_name: Deepak, city: Pune}
+lead_turns:
+  - "10 crore"
+  - "2 saal"
+  - "before I continue, what does your program actually cost?"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: escalated

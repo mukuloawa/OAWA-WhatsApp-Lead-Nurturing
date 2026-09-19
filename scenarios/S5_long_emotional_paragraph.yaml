@@ -1,0 +1,15 @@
+# DESIGN.md Appendix E table: "S5 | Long emotional paragraph |
+# next reply is not a bare question (length > 1 sentence)"
+id: S5
+name: Long emotional paragraph
+contact: {first_name: Sanjay, city: Jaipur}
+lead_turns:
+  - "8 crore"
+  - "4 saal"
+  - >-
+    honestly bohot mushkil chal raha hai. mera ek bada client pichle mahine chala gaya,
+    kaha ki returns nahi mil rahe. uske baad se raat ko neend nahi aati, lagta hai sab
+    galat kar raha hoon, aur naye clients bhi nahi mil rahe. pata nahi kya karu ab.
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  min_reply_length_after_turn: {turn_index: 2, min_chars: 60}

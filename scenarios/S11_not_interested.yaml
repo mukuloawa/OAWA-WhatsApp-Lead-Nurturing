@@ -1,0 +1,18 @@
+# DESIGN.md Appendix E table: "S11 | \"Not interested\" | declined, no link in the final reply"
+# Lead turns go all the way to the invite first, so "declined" here means
+# a real decline of the invite (not just never reaching it).
+id: S11
+name: Not interested
+contact: {first_name: Suresh, city: Nagpur}
+lead_turns:
+  - "12 crore"
+  - "10 saal"
+  - "leads nahi aa rahe"
+  - "kaafi time se, koi naya source nahi mila"
+  - "Instagram try kiya tha, kuch khaas result nahi mila"
+  - "shayad 2-3 naye clients mile the pichle saal"
+  - "not interested right now, maybe later"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: declined
+  no_link_in_final_reply: true

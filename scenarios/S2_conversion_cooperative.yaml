@@ -1,0 +1,20 @@
+# DESIGN.md Appendix E table: "S2 | Conversion, cooperative (Priya, Mumbai) | confirmed, conversion, key_metric non-empty"
+# Full YAML not given verbatim in DESIGN.md; written to match that row and the
+# "conversion" power-question category in Appendix A.
+id: S2
+name: Conversion, cooperative
+contact: {first_name: Priya, city: Mumbai}
+lead_turns:
+  - "around 15 crore"
+  - "6 saal ho gaye ab"
+  - "leads to aate hain but convert nahi hote, bohot frustrating hai"
+  - "zyadatar fee discuss karte waqt gayab ho jaate hain, phir reply hi nahi aata"
+  - "yeh 3-4 mahine se ho raha hai"
+  - "10 mein se shayad 2 hi convert hote hain"
+  - "haan, main aana chahungi"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: confirmed
+  extracted_includes: {problem_category: conversion, key_metric: ""}
+  link_sent_exactly_once: true
+  max_diagnosis_turns: 3

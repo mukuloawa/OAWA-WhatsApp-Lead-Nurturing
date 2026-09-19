@@ -1,0 +1,9 @@
+# Same as the real config/banned_phrases.yaml — duplicated here so
+# scenario tests don't depend on settings.config_dir pointing at the repo root.
+phrases:
+  - "guaranteed"
+  - "guarantee"
+  - "100%"
+  - "assured returns"
+  - "risk-free"
+  - "no risk"

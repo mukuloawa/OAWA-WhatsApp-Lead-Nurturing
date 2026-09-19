@@ -1,0 +1,20 @@
+# DESIGN.md Appendix E table: "S4 | One-word answers throughout |
+# never >1 question/turn; reaches invited or escalated within MAX_BOT_TURNS"
+id: S4
+name: One-word answers throughout
+contact: {first_name: Vikram, city: Delhi}
+lead_turns:
+  - "10cr"
+  - "5"
+  - "leads"
+  - "haan"
+  - "nahi"
+  - "kabhi nahi"
+  - "zero"
+  - "haan"
+  - "theek hai"
+  - "ok"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  max_bot_turns: 10
+  reaches_stage_within: {any_of: [invited, confirmed, declined, escalated], max_turns: 10}

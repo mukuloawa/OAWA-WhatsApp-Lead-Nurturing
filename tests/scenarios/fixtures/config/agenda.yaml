@@ -1,0 +1,8 @@
+# Test-only agenda for scenario runs. The real config/agenda.yaml at the
+# repo root deliberately still says FILL IN (docs/phase0-findings.md /
+# DESIGN.md Section 19, Q4 — OAWA hasn't supplied the real one yet); this
+# lets scenario tests render a real prompt without needing that.
+agenda:
+  - "How to identify your single biggest growth bottleneck"
+  - "A framework for turning referrals into a repeatable lead source"
+  - "Live Q&A with the OAWA team"

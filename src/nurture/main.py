@@ -1,9 +1,9 @@
 """FastAPI app factory.
 
 Wires up /health, /ready, /webhook/wa-reply, /admin/replay, the DB
-engine/session factory, the GHL adapter, the (stubbed, until Phase 4)
-conversation engine, and the debounce scheduler. Business logic itself
-lives in worker/pipeline.py and guards/; this module only wires
+engine/session factory, the GHL adapter, the conversation engine, and
+the debounce scheduler. Business logic itself lives in
+worker/pipeline.py, guards/, and engine/; this module only wires
 dependencies together.
 """
 
@@ -16,11 +16,12 @@ from fastapi import FastAPI
 from nurture.api.admin import router as admin_router
 from nurture.api.health import router as health_router
 from nurture.api.webhook import router as webhook_router
+from nurture.engine.claude_client import build_claude_engine
 from nurture.ghl.client import GHLClient
 from nurture.ghl.real import RealGHLClient
 from nurture.settings import Settings, get_settings
 from nurture.store.db import make_engine, make_session_factory
-from nurture.worker.engine_interface import AlwaysEscalateEngine, ConversationEngine
+from nurture.worker.engine_interface import ConversationEngine
 from nurture.worker.scheduler import Scheduler
 
 
@@ -34,6 +35,12 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
+        # DESIGN.md Section 11: refuse to start in shadow/live mode while
+        # config/agenda.yaml still has the FILL IN placeholder. dry_run
+        # (the default) is unaffected, so local dev/tests never need a
+        # real agenda.
+        settings.require_agenda_filled_in()
+
         app.state.settings = settings
         app.state.db_engine = make_engine(settings.database_url)
         app.state.session_factory = make_session_factory(app.state.db_engine)
@@ -44,12 +51,7 @@ def create_app(
             token=settings.ghl_token,
             location_id=settings.ghl_location_id,
         )
-        # No real conversation engine exists yet (Phase 4). Wiring in a
-        # safe default that always escalates rather than leaving this
-        # unset, so the pipeline is fully exercisable end to end now,
-        # with the worst case (if ever deployed before Phase 4) being
-        # "hands every conversation to a human" rather than guessing.
-        app.state.engine = engine or AlwaysEscalateEngine()
+        app.state.engine = engine or build_claude_engine(settings)
 
         app.state.scheduler = Scheduler(
             session_factory=app.state.session_factory,

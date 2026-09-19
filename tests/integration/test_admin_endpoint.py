@@ -60,8 +60,18 @@ def test_missing_admin_header_is_rejected(app_settings):
     assert resp.status_code == 401
 
 
-def test_replay_forces_dry_run_regardless_of_configured_mode(app_settings):
+def test_replay_forces_dry_run_regardless_of_configured_mode(app_settings, tmp_path):
     app_settings.send_mode = "live"  # configured mode is live...
+    # ...which requires a real (non-"FILL IN") agenda to even start
+    # (DESIGN.md Section 11); the shared real config/agenda.yaml
+    # deliberately still has the placeholder (OAWA hasn't supplied the
+    # real one yet), so this test supplies its own.
+    config_dir = tmp_path / "config"
+    config_dir.mkdir()
+    (config_dir / "agenda.yaml").write_text("agenda:\n  - Test agenda item\n")
+    (config_dir / "optout.yaml").write_text("patterns: []\n")
+    (config_dir / "banned_phrases.yaml").write_text("phrases: []\n")
+    app_settings.config_dir = config_dir
     inbound = Message(
         id="m1", direction="inbound", text="6 crore", sent_at=datetime.now(timezone.utc), sent_by_service=False
     )

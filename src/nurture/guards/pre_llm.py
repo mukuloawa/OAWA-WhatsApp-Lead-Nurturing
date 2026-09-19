@@ -37,8 +37,8 @@ from typing import Literal
 
 import yaml
 
+from nurture.engine.state import ALL_STAGE_TAGS, FLAG_TAGS, STAGE_TAGS, TERMINAL_STAGE_TAGS
 from nurture.ghl.models import Contact, Message
-from nurture.worker.stage_tags import ALL_STAGE_TAGS, FLAG_TAGS, STAGE_TAGS, TERMINAL_STAGE_TAGS
 
 GuardAction = Literal["skip", "pause", "optout", "escalate"]
 

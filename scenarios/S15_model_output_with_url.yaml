@@ -1,0 +1,17 @@
+# DESIGN.md Appendix E table: "S15 | Model output with a URL (stubbed Claude) |
+# regenerated, then escalated if repeated"
+#
+# Explicitly a stubbed-Claude scenario in DESIGN.md, not a real-LLM one —
+# it needs a scripted engine that deliberately returns a URL, which the
+# `python -m nurture.sim` CLI's real/--stub engine choice doesn't
+# express. This is exercised for real (not just documented) by
+# tests/unit/test_claude_engine.py::test_both_attempts_invalid_escalates_with_validation_failed_reason
+# and ::test_invalid_first_reply_triggers_regeneration_then_succeeds,
+# which use a fake Anthropic client scripted to return exactly this.
+id: S15
+name: Model output with a URL
+contact: {first_name: Test, city: Pune}
+lead_turns:
+  - "10 crore"
+assertions:
+  every_turn: [no_url]

@@ -1,0 +1,10 @@
+# DESIGN.md Appendix E table: "S10 | Abusive message | escalated"
+id: S10
+name: Abusive message
+contact: {first_name: Manoj, city: Indore}
+lead_turns:
+  - "10 crore"
+  - "why are you idiots wasting my time with this stupid bot, this is useless garbage"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: escalated

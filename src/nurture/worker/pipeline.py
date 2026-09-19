@@ -36,8 +36,8 @@ from nurture.store import repository
 from nurture.worker.actions import apply_send_mode, merge_extracted_fields
 from nurture.worker.engine_interface import ConversationEngine
 from nurture.worker.extracted_fields import translate_extracted
+from nurture.engine.state import ALL_STAGE_TAGS, STAGE_TAGS, current_stage_from_tags
 from nurture.worker.locks import ContactLock
-from nurture.worker.stage_tags import ALL_STAGE_TAGS, STAGE_TAGS
 
 logger = logging.getLogger("nurture.pipeline")
 
@@ -54,13 +54,18 @@ class PipelineOutcome:
     sent_message_id: str | None = None
     inbound_message_id: str | None = None
     send_mode: str | None = None
-
-
-def _current_stage(tags: set[str]) -> str:
-    for stage, tag in STAGE_TAGS.items():
-        if tag in tags:
-            return stage
-    return "opened"  # default: Workflow A always sets wa-stage-1 before this service ever runs
+    # Audit metadata for the turns row (DESIGN.md Section 6.2). Guard-
+    # triggered outcomes never call the engine, so these stay at their
+    # "no engine call happened" defaults.
+    model: str = "n/a"
+    prompt_version: str = "n/a"
+    tool_output: dict | None = None
+    validation_errors: list[str] | None = None
+    regenerated: bool = False
+    input_tokens: int | None = None
+    output_tokens: int | None = None
+    cache_read_tokens: int | None = None
+    latency_ms: int | None = None
 
 
 async def run_decision(
@@ -126,7 +131,7 @@ async def run_decision(
         )
         outcome.status = "processed"
         outcome.inbound_message_id = last_inbound.id
-        outcome.stage_before = _current_stage(contact.tags)
+        outcome.stage_before = current_stage_from_tags(contact.tags)
         outcome.stage_after = "escalated"
         return outcome
 
@@ -144,7 +149,7 @@ async def run_decision(
         )
         outcome.status = "processed"
         outcome.inbound_message_id = last_inbound.id
-        outcome.stage_before = _current_stage(contact.tags)
+        outcome.stage_before = current_stage_from_tags(contact.tags)
         outcome.stage_after = None
         return outcome
 
@@ -165,7 +170,7 @@ async def run_decision(
         )
         outcome.status = "processed"
         outcome.inbound_message_id = last_inbound.id
-        outcome.stage_before = _current_stage(contact.tags)
+        outcome.stage_before = current_stage_from_tags(contact.tags)
         outcome.stage_after = "escalated"
         return outcome
 
@@ -173,11 +178,18 @@ async def run_decision(
     known_fields = {k: v for k, v in contact.fields.items() if v is not None}
     decision = await engine.decide(contact=contact, thread=thread, known_fields=known_fields)
 
-    stage_before = _current_stage(contact.tags)
+    stage_before = current_stage_from_tags(contact.tags)
     wa_diagnosis_turns = int(contact.fields.get("wa_diagnosis_turns") or 0)
 
     if decision.escalate:
-        message = settings.escalation_message
+        # DESIGN.md Section 9.5: escalations send the fixed
+        # ESCALATION_MESSAGE and tag wa-escalated, EXCEPT llm_unavailable
+        # (and window_closed, handled earlier as a guard) — those are
+        # tagged for a human but no message is sent, since a Claude
+        # outage shouldn't produce a strange message to the lead
+        # (Section 7.3).
+        is_llm_unavailable = decision.escalation_reason == "llm_unavailable"
+        message = None if is_llm_unavailable else settings.escalation_message
         stage_after = "escalated"
         add_tags = [STAGE_TAGS["escalated"]]
         new_diagnosis_turns = 0
@@ -219,6 +231,15 @@ async def run_decision(
         sent_message_id=send_outcome.message_id,
         inbound_message_id=last_inbound.id,
         send_mode=send_mode,
+        model=decision.model,
+        prompt_version=decision.prompt_version,
+        tool_output=decision.tool_output,
+        validation_errors=decision.validation_errors,
+        regenerated=decision.regenerated,
+        input_tokens=decision.input_tokens,
+        output_tokens=decision.output_tokens,
+        cache_read_tokens=decision.cache_read_tokens,
+        latency_ms=decision.latency_ms,
     )
 
 
@@ -310,6 +331,9 @@ async def process(
                 )
 
                 if outcome.inbound_message_id is not None:
+                    tool_output = outcome.tool_output
+                    if tool_output is None and outcome.extracted:
+                        tool_output = {"extracted": outcome.extracted}
                     await repository.insert_turn(
                         session,
                         contact_id=event.contact_id,
@@ -317,13 +341,23 @@ async def process(
                         inbound_message_id=outcome.inbound_message_id,
                         stage_before=outcome.stage_before or "unknown",
                         stage_after=outcome.stage_after,
-                        model="stub" if outcome.status == "processed" else "n/a",
-                        prompt_version="n/a",  # Phase 4 fills this in for real engine calls
-                        tool_output={"extracted": outcome.extracted} if outcome.extracted else None,
+                        model=outcome.model,
+                        prompt_version=outcome.prompt_version,
+                        tool_output=tool_output,
+                        validation_errors=(
+                            {"failed_rules": outcome.validation_errors}
+                            if outcome.validation_errors
+                            else None
+                        ),
+                        regenerated=outcome.regenerated,
                         reply_text=outcome.reply_text,
                         send_mode=outcome.send_mode or settings.send_mode,
                         sent=outcome.sent,
                         sent_message_id=outcome.sent_message_id,
+                        input_tokens=outcome.input_tokens,
+                        output_tokens=outcome.output_tokens,
+                        cache_read_tokens=outcome.cache_read_tokens,
+                        latency_ms=outcome.latency_ms,
                     )
 
                 return outcome

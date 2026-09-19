@@ -1,0 +1,12 @@
+# DESIGN.md Appendix E table: "S6 | Devanagari Hindi |
+# replies in English (no Devanagari characters in reply)"
+id: S6
+name: Devanagari Hindi
+contact: {first_name: Anjali, city: Lucknow}
+lead_turns:
+  - "लगभग 12 करोड़"
+  - "पांच साल हो गए"
+  - "क्लाइंट नहीं मिल रहे हैं, ज्यादातर रेफरल से ही आते हैं"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  no_devanagari: true

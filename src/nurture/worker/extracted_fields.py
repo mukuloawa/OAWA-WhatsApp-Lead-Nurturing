@@ -26,9 +26,23 @@ EXTRACTED_FIELD_TO_WA_KEY: dict[str, str] = {
 }
 
 
+WA_KEY_TO_EXTRACTED_FIELD: dict[str, str] = {v: k for k, v in EXTRACTED_FIELD_TO_WA_KEY.items()}
+
+
 def translate_extracted(extracted: dict[str, str]) -> dict[str, str]:
     return {
         EXTRACTED_FIELD_TO_WA_KEY[key]: value
         for key, value in extracted.items()
         if key in EXTRACTED_FIELD_TO_WA_KEY
+    }
+
+
+def known_fields_from_ghl(fields: dict[str, str]) -> dict[str, str]:
+    """Reverse of translate_extracted: our wa_* GHL keys -> the respond
+    tool's Appendix B field names, for rendering KNOWN FIELDS into the
+    prompt (DESIGN.md Section 9.1)."""
+    return {
+        WA_KEY_TO_EXTRACTED_FIELD[key]: value
+        for key, value in fields.items()
+        if key in WA_KEY_TO_EXTRACTED_FIELD and value is not None
     }

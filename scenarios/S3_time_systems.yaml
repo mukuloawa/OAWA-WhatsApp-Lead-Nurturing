@@ -1,0 +1,17 @@
+# DESIGN.md Appendix E table: "S3 | Time/systems (Amit, Ahmedabad) | confirmed, time_systems"
+id: S3
+name: Time/systems
+contact: {first_name: Amit, city: Ahmedabad}
+lead_turns:
+  - "around 20 crore"
+  - "8 saal"
+  - "sab kuch khud hi karna padta hai, koi process nahi hai, AUM flat pada hai"
+  - "zyadatar time admin aur paperwork mein chala jaata hai"
+  - "nahi, kabhi try nahi kiya properly"
+  - "haan interested hoon"
+assertions:
+  every_turn: [max_one_question, no_url, max_chars_900]
+  final_stage: confirmed
+  extracted_includes: {problem_category: time_systems}
+  link_sent_exactly_once: true
+  max_diagnosis_turns: 3
