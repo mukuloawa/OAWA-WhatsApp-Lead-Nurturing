@@ -32,10 +32,19 @@ def _utcnow() -> datetime:
     return datetime.now(timezone.utc)
 
 
+# SQLite only auto-populates a primary key on INSERT when the column is
+# declared as plain INTEGER PRIMARY KEY (its ROWID-alias trick); a bare
+# BigInteger primary key silently leaves `id` NULL on SQLite and every
+# insert fails NOT NULL. `.with_variant` keeps BIGSERIAL-equivalent
+# BigInteger on Postgres (matching DESIGN.md Section 6.2's `BIGSERIAL`)
+# while using plain Integer on SQLite for local dev and tests.
+_PK = BigInteger().with_variant(Integer, "sqlite")
+
+
 class InboundEvent(Base):
     __tablename__ = "inbound_events"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(_PK, primary_key=True, autoincrement=True)
     contact_id: Mapped[str] = mapped_column(Text, nullable=False)
     received_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=_utcnow
@@ -53,7 +62,7 @@ class InboundEvent(Base):
 class Turn(Base):
     __tablename__ = "turns"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(_PK, primary_key=True, autoincrement=True)
     contact_id: Mapped[str] = mapped_column(Text, nullable=False)
     event_id: Mapped[int | None] = mapped_column(
         BigInteger, ForeignKey("inbound_events.id"), nullable=True
@@ -69,6 +78,11 @@ class Turn(Base):
     reply_text: Mapped[str | None] = mapped_column(Text, nullable=True)
     send_mode: Mapped[str] = mapped_column(Text, nullable=False)
     sent: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # Not in DESIGN.md Section 6.2's original DDL, but required by Section 7.2's
+    # own comment on Message.sent_by_service ("True if id is in turns.sent
+    # message ids") — that comment presumes this column exists. Added in
+    # Phase 3 to resolve that gap; see docs/phase3-notes.md.
+    sent_message_id: Mapped[str | None] = mapped_column(Text, nullable=True)
     input_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     output_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)
     cache_read_tokens: Mapped[int | None] = mapped_column(Integer, nullable=True)

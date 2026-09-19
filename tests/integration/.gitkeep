@@ -1,2 +1,0 @@
-Pipeline integration tests (FakeGHLClient + SQLite + stubbed Claude) go
-here, built in Phase 3 (DESIGN.md Section 17). Empty for now.

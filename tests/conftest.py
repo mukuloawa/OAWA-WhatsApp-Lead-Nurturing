@@ -4,8 +4,14 @@ import json
 from pathlib import Path
 
 import pytest
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.pool import StaticPool
 
+from nurture.ghl.models import Contact, Message
 from nurture.settings import Settings
+from nurture.store.db import make_session_factory
+from nurture.store.models import Base
+from nurture.worker.engine_interface import ConversationEngine, EngineDecision
 
 GHL_FIXTURES_DIR = Path(__file__).parent / "fixtures" / "ghl"
 
@@ -46,3 +52,45 @@ def valid_settings_kwargs() -> dict:
 def test_settings(valid_settings_kwargs) -> Settings:
     # _env_file=None: ignore any real .env on disk so tests are hermetic.
     return Settings(_env_file=None, **valid_settings_kwargs)
+
+
+@pytest.fixture
+async def db_session_factory():
+    """A fresh in-memory SQLite DB (schema created directly from the
+    models, not via Alembic — that's covered separately by the migration
+    checks) with StaticPool so all connections share the same in-memory
+    database for the life of the test."""
+    engine = create_async_engine(
+        "sqlite+aiosqlite:///:memory:",
+        poolclass=StaticPool,
+        connect_args={"check_same_thread": False},
+    )
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    yield make_session_factory(engine)
+    await engine.dispose()
+
+
+class StubEngine(ConversationEngine):
+    """DESIGN.md Section 16: 'a stubbed Claude returning canned tool
+    outputs'. Test infrastructure, not the real Phase 4 engine. Defined
+    here (not in a `tests.integration` submodule) so it can be imported
+    without relying on `tests/` being an importable package — see the
+    `load_ghl_fixture` fixture above for why that matters."""
+
+    def __init__(self, decision) -> None:
+        self._decision = decision
+        self.calls: list[dict] = []
+
+    async def decide(
+        self, *, contact: Contact, thread: list[Message], known_fields: dict[str, str]
+    ) -> EngineDecision:
+        self.calls.append({"contact": contact, "thread": thread, "known_fields": known_fields})
+        if callable(self._decision):
+            return self._decision(contact=contact, thread=thread, known_fields=known_fields)
+        return self._decision
+
+
+@pytest.fixture
+def stub_engine_factory():
+    return StubEngine
